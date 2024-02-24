@@ -15,8 +15,14 @@ client.on('ready', (c) => {
     console.log(`${c.user.username} is online!`);
 });
 
-client.on('messageCreate', (msg) => {
+/* client.on('messageCreate', (msg) => {
     console.log(`${msg.member.displayName}: ${msg.content}`);
+}); */
+
+client.on('messageCreate', (msg) => {
+    if(msg.content === 'hello') {
+        msg.reply('zdr kopele!');
+    }
 });
 
 client.login(token);
