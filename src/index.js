@@ -33,7 +33,11 @@ client.on('interactionCreate', (interaction) =>
     //Check if the interaction is a slash command
     if(!interaction.isChatInputCommand()) return;
 
-    console.log(interaction);
+    //Check for different commands
+    if(interaction.commandName === 'hey')
+    {
+        interaction.reply("ko staa kopele!");
+    }
 });
 
 client.login(process.env.TOKEN);
