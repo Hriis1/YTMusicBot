@@ -20,6 +20,13 @@ client.on('ready', (c) => {
 }); */
 
 client.on('messageCreate', (msg) => {
+
+    //Dont do anything if the msg is sent by a bot
+    if(msg.author.bot)
+    {
+        return;
+    }
+
     if(msg.content === 'hello') {
         msg.reply('zdr kopele!');
     }
