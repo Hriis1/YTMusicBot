@@ -31,4 +31,4 @@ client.on('messageCreate', (msg) => {
     }
 });
 
-client.login(process.env.TOKEN);ZZ
+client.login(process.env.TOKEN);
