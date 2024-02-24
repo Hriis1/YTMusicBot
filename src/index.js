@@ -27,4 +27,13 @@ client.on('messageCreate', (msg) => {
     }
 });
 
+//Event listener for slash commands
+client.on('interactionCreate', (interaction) =>
+{
+    //Check if the interaction is a slash command
+    if(!interaction.isChatInputCommand()) return;
+
+    console.log(interaction);
+});
+
 client.login(process.env.TOKEN);

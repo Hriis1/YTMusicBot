@@ -2,6 +2,7 @@ require('dotenv').config();
 const { REST, Routes } = require('discord.js');
 
 
+//The commands that should be registered
 const commands = [
     {
         name: 'hey',
