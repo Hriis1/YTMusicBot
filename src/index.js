@@ -28,6 +28,7 @@ client.on('messageCreate', (msg) => {
 
 //Event listener for slash commands
 client.on('interactionCreate', (interaction) => {
+    
     //Check if the interaction is not a slash command
     if (!interaction.isChatInputCommand()) return;
 
