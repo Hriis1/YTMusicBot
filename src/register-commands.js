@@ -5,13 +5,29 @@ const { REST, Routes, ApplicationCommandOptionType } = require('discord.js');
 //The commands that should be registered
 const commands = [
     {
-        name: 'hey',
+        name: 'Hey',
         description: 'Replies with hey!'
     },
     {
-        name: 'add',
-        description: 'Adds 2 numbers',
+        name: 'AddOrSubtract',
+        description: 'Adds or subtracts 2 numbers',
         options: [
+            {
+                name: 'operation',
+                description: 'The operation to be executed',
+                type: ApplicationCommandOptionType.String,
+                choises: [
+                    {
+                        name: 'add',
+                        value: 'add'
+                    },
+                    {
+                        name: 'subract',
+                        value: 'subract'
+                    }
+                ],
+                required: true
+            },
             {
                 name: 'num1',
                 description: 'First number',
