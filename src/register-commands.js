@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { REST, Routes } = require('discord.js');
+const { REST, Routes, ApplicationCommandOptionType } = require('discord.js');
 
 
 //The commands that should be registered
@@ -9,8 +9,22 @@ const commands = [
         description: 'Replies with hey!'
     },
     {
-        name: 'kopr',
-        description: "kazva si"
+        name: 'add',
+        description: 'Adds 2 numbers',
+        options: [
+            {
+                name: 'num1',
+                description: 'First number',
+                type: ApplicationCommandOptionType.Number,
+                required: true
+            },
+            {
+                name: 'num2',
+                description: 'Second number',
+                type: ApplicationCommandOptionType.Number,
+                required: true
+            }
+        ]
     }
 ];
 
