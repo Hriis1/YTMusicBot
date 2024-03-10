@@ -39,8 +39,8 @@ client.on('interactionCreate', (interaction) => {
     } else if (interaction.commandName === 'add') {
         const num1 = interaction.options.get('num1');
         const num2 = interaction.options.get('num2');
-
-        console.log(`${num1.value} ${num2.value}`);
+        
+        interaction.reply(`${num1.value} + ${num2.value} = ${num1.value+ num2.value}`);
     }
 });
 
