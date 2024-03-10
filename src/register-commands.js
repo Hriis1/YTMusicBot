@@ -16,7 +16,7 @@ const commands = [
                 name: 'operation',
                 description: 'The operation to be executed',
                 type: ApplicationCommandOptionType.String,
-                choises: [
+                choices: [
                     {
                         name: 'add',
                         value: 'add'
