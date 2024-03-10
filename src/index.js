@@ -36,11 +36,17 @@ client.on('interactionCreate', (interaction) => {
     //Check for different commands
     if (interaction.commandName === 'hey') {
         interaction.reply("ko staa kopele!");
-    } else if (interaction.commandName === 'add') {
-        const num1 = interaction.options.get('num1');
-        const num2 = interaction.options.get('num2');
-        
-        interaction.reply(`${num1.value} + ${num2.value} = ${num1.value+ num2.value}`);
+    } else if (interaction.commandName === 'addorsubtract') {
+        const num1 = interaction.options.get('num1').value;
+        const num2 = interaction.options.get('num2').value;
+
+        if (interaction.options.get('operation').value === 'add') {
+            interaction.reply(`${num1} + ${num2} = ${num1 + num2}`);
+        } else {
+            interaction.reply(`${num1} - ${num2} = ${num1 - num2}`);
+        }
+
+
     }
 });
 
