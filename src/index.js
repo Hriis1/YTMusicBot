@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { Client, IntentsBitField, EmbedBuilder } = require('discord.js');
+const { Player } = require('discord-player');
 
 const client = new Client({
     intents: [
@@ -74,6 +75,9 @@ client.on('interactionCreate', (interaction) => {
 
         //Send the embed
         interaction.reply({ embeds: [embed] });
+    } else if (interaction.commandName === 'play') {
+        const music = interaction.options.get('music').value;
+        console.log(music);
     }
 });
 
