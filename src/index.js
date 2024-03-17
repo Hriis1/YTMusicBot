@@ -74,6 +74,8 @@ client.on('interactionCreate', (interaction) => {
 
         //Send the embed
         interaction.reply({ embeds: [embed] });
+    } else if (interaction.commandName === 'play') {
+
     }
 });
 
