@@ -46,7 +46,12 @@ client.on('interactionCreate', (interaction) => {
             interaction.reply(`${num1} - ${num2} = ${num1 - num2}`);
         }
     } else if (interaction.commandName === 'embed') {
+        //Create and fill the embed
+        let embed = new EmbedBuilder();
+        embed.setTitle("Embed title").setDescription("This is an embed description");
 
+        //Send the embed
+        interaction.reply(embed);
     }
 });
 
