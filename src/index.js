@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, IntentsBitField } = require('discord.js');
+const { Client, IntentsBitField, EmbedBuilder } = require('discord.js');
 
 const client = new Client({
     intents: [
@@ -45,7 +45,7 @@ client.on('interactionCreate', (interaction) => {
         } else {
             interaction.reply(`${num1} - ${num2} = ${num1 - num2}`);
         }
-
+    } else if (interaction.commandName === 'embed') {
 
     }
 });
