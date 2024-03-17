@@ -43,6 +43,18 @@ const commands = [
         ]
     },
     {
+        name: "play",
+        description: "Plays music",
+        options: [
+            {
+                name: 'music',
+                description: 'Music to play',
+                type: ApplicationCommandOptionType.String,
+                required: true
+            },
+        ]
+    },
+    {
         name: 'embed',
         description: 'Sends an embed!'
     }
