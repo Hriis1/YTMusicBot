@@ -8,8 +8,11 @@ const client = new Client({
         IntentsBitField.Flags.GuildMembers,
         IntentsBitField.Flags.GuildMessages,
         IntentsBitField.Flags.MessageContent,
+        IntentsBitField.Flags.GuildVoiceStates
     ]
 });
+const player = new Player(client);
+client.player = player;
 
 client.on('ready', (c) => {
     console.log(`${c.user.username} is online!`);
@@ -29,7 +32,7 @@ client.on('messageCreate', (msg) => {
 });
 
 //Event listener for slash commands
-client.on('interactionCreate', (interaction) => {
+client.on('interactionCreate', async (interaction) => {
 
     //Check if the interaction is not a slash command
     if (!interaction.isChatInputCommand()) return;
@@ -76,8 +79,23 @@ client.on('interactionCreate', (interaction) => {
         //Send the embed
         interaction.reply({ embeds: [embed] });
     } else if (interaction.commandName === 'play') {
+        //Get the link
         const music = interaction.options.get('music').value;
-        console.log(music);
+
+        // Get the voice channel of the user who triggered the command
+        const memberVoiceChannel = interaction.member.voice.channel;
+
+        //Play the music
+        try {
+            const {track} = await client.player.play(memberVoiceChannel, music, { search: true });
+            console.log(`🎉 I am playing ${track.title} 🎉`);
+        } catch (error) {
+            console.log(`Failed to play error oh no:\n\n${error}`);
+        }
+        
+
+        //Tell the channel
+        interaction.channel.send(`Playing ${music}`);
     }
 });
 
