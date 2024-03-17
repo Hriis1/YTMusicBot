@@ -48,7 +48,19 @@ client.on('interactionCreate', (interaction) => {
     } else if (interaction.commandName === 'embed') {
         //Create and fill the embed
         let embed = new EmbedBuilder();
-        embed.setTitle("Embed title").setDescription("This is an embed description");
+        embed.setTitle("Embed title").setDescription("This is an embed description").setColor('Random')
+            .addFields(
+                [
+                    {
+                        name: 'Field 1 title',
+                        value: 'Val of field 1'
+                    },
+                    {
+                        name: 'Field 2 title',
+                        value: 'Val of field 2'
+                    }
+                ]
+            );
 
         //Send the embed
         interaction.reply({ embeds: [embed] });
