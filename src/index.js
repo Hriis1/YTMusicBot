@@ -51,7 +51,7 @@ client.on('interactionCreate', (interaction) => {
         embed.setTitle("Embed title").setDescription("This is an embed description");
 
         //Send the embed
-        interaction.reply(embed);
+        interaction.reply({ embeds: [embed] });
     }
 });
 
