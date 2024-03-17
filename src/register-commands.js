@@ -39,8 +39,12 @@ const commands = [
                 description: 'Second number',
                 type: ApplicationCommandOptionType.Number,
                 required: true
-            }
+            },
         ]
+    },
+    {
+        name: 'embed',
+        description: 'Sends an embed!'
     }
 ];
 
