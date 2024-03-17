@@ -57,8 +57,18 @@ client.on('interactionCreate', (interaction) => {
                     },
                     {
                         name: 'Field 2 title',
-                        value: 'Val of field 2'
-                    }
+                        value: 'Field 2 is an inline',
+                        inline: true
+                    },
+                    {
+                        name: 'Field 3 title',
+                        value: 'Field 3 is also an inline',
+                        inline: true
+                    },
+                    {
+                        name: 'Field 4 title',
+                        value: 'Val of field 4'
+                    },
                 ]
             );
 
