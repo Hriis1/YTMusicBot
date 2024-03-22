@@ -94,23 +94,27 @@ client.on('interactionCreate', async (interaction) => {
         //Send the embed
         interaction.reply({ embeds: [embed] });
     } else if (interaction.commandName === 'play') {
+
+
         //Get the link
         const music = interaction.options.get('music').value;
 
         // Get the voice channel of the user who triggered the command
         const memberVoiceChannel = interaction.member.voice.channel;
 
-        //Play the music
+        //Create a queue
         try {
-            const { track } = await client.player.play(memberVoiceChannel, music, { search: true });
-            console.log(`🎉 I am playing ${track.title} 🎉`);
+            // Await the creation of the queue
+            const queue = await client.player.nodes.create(interaction.guildId);
+
+            if(!queue.connection) await queue.connect(memberVoiceChannel);
+
+            // Respond to the interaction
+            interaction.reply("Connecting.");
         } catch (error) {
-            console.log(`Failed to play error oh no:\n\n${error}`);
+            console.error("Error occurred while creating or playing the queue:", error);
+            interaction.reply("An error occurred while processing your request.");
         }
-
-
-        //Tell the channel
-        interaction.channel.send(`Playing ${music}`);
     }
 });
 
