@@ -20,8 +20,14 @@ const client = new Client({
         IntentsBitField.Flags.GuildVoiceStates
     ]
 });
-const player = new Player(client);
-client.player = player;
+
+//Init the player
+client.player = new Player(client, {
+    ytdlOptions: {
+        quality: "highestaudio",
+        highWaterMark: 1 << 25
+    }
+});
 
 client.on('ready', (c) => {
     console.log(`${c.user.username} is online!`);
