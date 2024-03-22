@@ -1,6 +1,11 @@
 require('dotenv').config();
-const { Client, IntentsBitField, EmbedBuilder } = require('discord.js');
+
+const { REST } = require("@discordjs/rest");
+const { Routes } = require("discord-api-types/v9");
+const { Client, Intents, Collection } = require('discord.js');
 const { Player } = require('discord-player');
+
+const { IntentsBitField, EmbedBuilder } = require('discord.js');
 
 const client = new Client({
     intents: [
@@ -87,12 +92,12 @@ client.on('interactionCreate', async (interaction) => {
 
         //Play the music
         try {
-            const {track} = await client.player.play(memberVoiceChannel, music, { search: true });
+            const { track } = await client.player.play(memberVoiceChannel, music, { search: true });
             console.log(`🎉 I am playing ${track.title} 🎉`);
         } catch (error) {
             console.log(`Failed to play error oh no:\n\n${error}`);
         }
-        
+
 
         //Tell the channel
         interaction.channel.send(`Playing ${music}`);
