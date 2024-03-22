@@ -7,6 +7,10 @@ const { Player } = require('discord-player');
 
 const { IntentsBitField, EmbedBuilder } = require('discord.js');
 
+//node packages
+const fs = require("node:fs");
+const path = require("node:path");
+
 const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
