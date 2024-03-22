@@ -3,7 +3,7 @@ require('dotenv').config();
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { Client, Intents, Collection } = require('discord.js');
-const { Player } = require('discord-player');
+const { Player, QueryType } = require('discord-player');
 
 const { IntentsBitField, EmbedBuilder } = require('discord.js');
 
@@ -97,7 +97,7 @@ client.on('interactionCreate', async (interaction) => {
 
 
         //Get the link
-        const music = interaction.options.get('music').value;
+        const userInput = interaction.options.get('music').value;
 
         // Get the voice channel of the user who triggered the command
         const memberVoiceChannel = interaction.member.voice.channel;
@@ -109,8 +109,29 @@ client.on('interactionCreate', async (interaction) => {
 
             if(!queue.connection) await queue.connect(memberVoiceChannel);
 
-            // Respond to the interaction
-            interaction.reply("Connecting.");
+            const result = await client.player.search(userInput, {
+                requestedBy: interaction.user,
+                searchEngine: QueryType.YOUTUBE_VIDEO
+            });
+
+            console.log(result.tracks);
+            if(result.tracks.lenght == 0)
+            {
+                interaction.reply("no results found");
+                return
+            }
+
+            const song = result.tracks[0];        
+            await queue.addTrack(song);
+            
+
+            if(!queue.isPlaying())
+            {
+                interaction.reply("Playing a song");
+            } else {
+                interaction.reply("Song added to queue");
+            }
+            
         } catch (error) {
             console.error("Error occurred while creating or playing the queue:", error);
             interaction.reply("An error occurred while processing your request.");
