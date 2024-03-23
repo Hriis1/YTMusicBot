@@ -22,12 +22,14 @@ const client = new Client({
 });
 
 //Init the player
-client.player = new Player(client, {
+const player = new Player(client, {
     ytdlOptions: {
         quality: "highestaudio",
         highWaterMark: 1 << 25
     }
 });
+player.extractors.loadDefault();
+client.player = player;
 
 client.on('ready', (c) => {
     console.log(`${c.user.username} is online!`);
@@ -107,31 +109,25 @@ client.on('interactionCreate', async (interaction) => {
             // Await the creation of the queue
             const queue = await client.player.nodes.create(interaction.guildId);
 
-            if(!queue.connection) await queue.connect(memberVoiceChannel);
+            if (!queue.connection) await queue.connect(memberVoiceChannel);
 
             const result = await client.player.search(userInput, {
                 requestedBy: interaction.user,
                 searchEngine: QueryType.YOUTUBE_VIDEO
             });
 
-            console.log(result.tracks);
-            if(result.tracks.lenght == 0)
+            if(result.tracks.length === 0)
             {
-                interaction.reply("no results found");
-                return
+                interaction.reply("No results found");
+                return;
             }
 
-            const song = result.tracks[0];        
-            await queue.addTrack(song);
-            
+            const song = result.tracks[0];
+            queue.addTrack(song);
 
-            if(!queue.isPlaying())
-            {
-                interaction.reply("Playing a song");
-            } else {
-                interaction.reply("Song added to queue");
-            }
-            
+            if(!queue.playing) await queue.play(song);
+            interaction.reply("we got here");
+
         } catch (error) {
             console.error("Error occurred while creating or playing the queue:", error);
             interaction.reply("An error occurred while processing your request.");
