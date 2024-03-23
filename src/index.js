@@ -116,8 +116,7 @@ client.on('interactionCreate', async (interaction) => {
                 searchEngine: QueryType.YOUTUBE_VIDEO
             });
 
-            if(result.tracks.length === 0)
-            {
+            if (result.tracks.length === 0) {
                 interaction.reply("No results found");
                 return;
             }
@@ -125,8 +124,13 @@ client.on('interactionCreate', async (interaction) => {
             const song = result.tracks[0];
             queue.addTrack(song);
 
-            if(!queue.playing) await queue.play(song);
-            interaction.reply("we got here");
+            if (!queue.playing) {
+                await queue.play(song);
+                interaction.reply("Playing a song");
+            } else {
+                interaction.reply("Song already playing");
+            }
+            
 
         } catch (error) {
             console.error("Error occurred while creating or playing the queue:", error);
