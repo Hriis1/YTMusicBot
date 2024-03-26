@@ -11,6 +11,9 @@ const { IntentsBitField, EmbedBuilder } = require('discord.js');
 const fs = require("node:fs");
 const path = require("node:path");
 
+//variables
+var queue;
+
 const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
@@ -107,7 +110,12 @@ client.on('interactionCreate', async (interaction) => {
         //Create a queue
         try {
             // Await the creation of the queue
-            const queue = await client.player.nodes.create(interaction.guildId);
+            if (queue == undefined) {
+                queue = await client.player.nodes.create(interaction.guildId);
+                console.log("Creating new queue");
+            } else {
+                console.log("Queue already created")
+            }
 
             if (!queue.connection) await queue.connect(memberVoiceChannel);
 
@@ -124,13 +132,14 @@ client.on('interactionCreate', async (interaction) => {
             const song = result.tracks[0];
             queue.addTrack(song);
 
-            if (!queue.playing) {
+            if (!queue.isPlaying()) {
                 await queue.play(song);
                 interaction.reply("Playing a song");
+                console.log(queue.isPlaying());
             } else {
                 interaction.reply("Song already playing");
             }
-            
+
 
         } catch (error) {
             console.error("Error occurred while creating or playing the queue:", error);
