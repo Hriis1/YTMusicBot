@@ -129,11 +129,13 @@ client.on('interactionCreate', async (interaction) => {
                 return;
             }
 
+            
             const song = result.tracks[0];
-            queue.addTrack(song);
+            //queue.addTrack(song);
+            //console.log("Song Added to queue");
 
-            if (!queue.node.isPlaying()) {
-                await queue.node.play();
+            if (!queue.isPlaying()) {
+                await queue.play(song);
                 interaction.reply("Playing a song");
             } else {
                 interaction.reply("Song already playing");
