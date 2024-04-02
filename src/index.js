@@ -133,10 +133,11 @@ client.on('interactionCreate', async (interaction) => {
            
 
             //Add song to queue
-            queue.addTrack(song);
+            //queue.addTrack(song);
             //Play the song
-            await queue.play(queue.tracks.data[queue.tracks.data.length - 1]);
-            interaction.reply("Playing " + queue.tracks.data[queue.tracks.data.length - 1].title);
+            //await queue.play(queue.tracks.data[queue.tracks.data.length - 1]);
+            await queue.play(song);
+            interaction.reply("Playing " + song.title);
             console.log(queue.tracks.data.length);
 
 
