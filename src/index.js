@@ -150,7 +150,10 @@ client.on('interactionCreate', async (interaction) => {
     } else if (interaction.commandName === 'skip') {
 
         if (queue === undefined) {
-            interaction.reply("Queue not yet created!");
+            interaction.reply("Queue not yet created. Nothing to skip!");
+        } else if (queue.isPlaying()) {
+           await queue.node.skip();
+            interaction.reply("Skipped the current song");
         }
         //interaction.reply("Skipping");
     }
