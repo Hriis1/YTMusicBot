@@ -128,17 +128,11 @@ client.on('interactionCreate', async (interaction) => {
 
 
             const song = result.tracks[0];
-            //queue.addTrack(song);
 
-           
-
-            //Add song to queue
-            //queue.addTrack(song);
-            //Play the song
-            //await queue.play(queue.tracks.data[queue.tracks.data.length - 1]);
+            
             await queue.play(song);
             interaction.reply("Playing " + song.title);
-            console.log(queue.tracks.data.length);
+            console.log(queue.size);
 
 
         } catch (error) {
