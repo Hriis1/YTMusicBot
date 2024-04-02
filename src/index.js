@@ -152,8 +152,16 @@ client.on('interactionCreate', async (interaction) => {
         if (queue === undefined) {
             interaction.reply("Queue not yet created. Nothing to skip!");
         } else if (queue.isPlaying()) {
-           await queue.node.skip();
-            interaction.reply("Skipped the current song");
+            if (queue.size != 0) {
+                //If there is another song in the queue
+                await queue.node.skip();
+                interaction.reply("Skipped the current song!");
+            } else {
+                //If this is the last playing song
+                queue.delete();
+                queue = undefined;
+                interaction.reply("Skipped the current song! No more songs to play!");
+            }
         }
         //interaction.reply("Skipping");
     }
