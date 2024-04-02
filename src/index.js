@@ -131,11 +131,12 @@ client.on('interactionCreate', async (interaction) => {
 
             if (queue.isPlaying()) {
                 //if a song is already plaing
-                interaction.reply("Song already plaing");
+                await queue.addTrack(song);
+                interaction.reply("Added: " + song.title + " to the queue!");
             } else {
                 //if there is no song playing
                 await queue.play(song);
-                interaction.reply("Playing " + song.title);
+                interaction.reply("Playing: " + song.title);
             }
 
 
