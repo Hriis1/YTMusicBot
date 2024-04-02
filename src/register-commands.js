@@ -55,6 +55,10 @@ const commands = [
         ]
     },
     {
+        name: 'skip',
+        description: 'Skips the first song in the queue!'
+    },
+    {
         name: 'embed',
         description: 'Sends an embed!'
     }
