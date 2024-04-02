@@ -147,6 +147,12 @@ client.on('interactionCreate', async (interaction) => {
             console.error("Error occurred while creating or playing the queue:", error);
             interaction.reply("An error occurred while processing your request.");
         }
+    } else if (interaction.commandName === 'skip') {
+
+        if (queue === undefined) {
+            interaction.reply("Queue not yet created!");
+        }
+        //interaction.reply("Skipping");
     }
 });
 
