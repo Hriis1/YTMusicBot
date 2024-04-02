@@ -112,9 +112,6 @@ client.on('interactionCreate', async (interaction) => {
             // Await the creation of the queue
             if (queue == undefined) {
                 queue = await client.player.nodes.create(interaction.guildId);
-                console.log("Creating new queue");
-            } else {
-                console.log("Queue already created")
             }
 
             if (!queue.connection) await queue.connect(memberVoiceChannel);
