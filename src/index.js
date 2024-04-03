@@ -34,6 +34,9 @@ async function playSong(queue, song, interaction) {
         await queue.play(song);
         interaction.reply("Playing: " + song.title);
     }
+
+    //Print the size of the queue for testing
+    console.log(queue.size);
 }
 
 const client = new Client({
@@ -126,8 +129,6 @@ client.on('interactionCreate', async (interaction) => {
         //Get the link
         const userInput = interaction.options.get('music').value;
 
-
-
         //Create a queue
         try {
             // Await the creation of the queue
@@ -145,9 +146,19 @@ client.on('interactionCreate', async (interaction) => {
                     interaction.reply("Song buffer is empty. There is nothing to chose from!");
                 }
                 else {
+                    //Get the number
+                    const songPos = parseInt(userInput);
+                    if(songPos <= 0 || songPos > songBuffer.length) {
+                        interaction.reply("Incorrect input. Please chose a number from the list!");
+                        return;
+                    }
+
+                    //Play the song
+                    song = songBuffer[songPos];
+                    playSong(queue, song, interaction);
+
                     //Clear the song buffer
                     songBuffer = [];
-                    interaction.reply("Clearing the song buffer :)");
                 }
 
             }
@@ -167,9 +178,6 @@ client.on('interactionCreate', async (interaction) => {
                 //Play the song
                 song = result.tracks[0];
                 playSong(queue, song, interaction);
-
-                //Print the size of the queue for testing
-                console.log(queue.size);
                 return;
             } else {
                 //If input is not a link
