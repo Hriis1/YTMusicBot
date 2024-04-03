@@ -40,6 +40,32 @@ async function playSong(queue, song, interaction) {
     console.log(queue.size);
 }
 
+async function playPlaylist(queue, playlist, interaction) {
+
+    // Get the voice channel of the user who triggered the command and connect to it
+    const memberVoiceChannel = interaction.member.voice.channel;
+    if (!queue.connection) await queue.connect(memberVoiceChannel);
+
+    //Add the songs of the playlist to the queue
+    for (let index = 0; index < playlist.tracks.length; index++) {
+        let song = playlist.tracks[index];
+        song.playlist = undefined;
+        if (queue.isPlaying()) {
+            //if a song is already plaing
+            await queue.addTrack(song);         
+        } else {
+            //if there is no song playing
+            await queue.play(song);
+        }
+    }
+
+    interaction.reply("Added the playlist to the queue!");
+
+
+    //Print the size of the queue for testing
+    console.log(queue.size);
+}
+
 const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
@@ -143,7 +169,18 @@ client.on('interactionCreate', async (interaction) => {
             let result = null;
             if (utils.isYouTubePlaylist(userInput)) {
                 //If the user has specified what he gave is a playlist
-                interaction.reply("Playlist :)");
+                result = await client.player.search(userInput, {
+                    requestedBy: interaction.user,
+                    searchEngine: QueryType.YOUTUBE_PLAYLIST
+                });
+
+                if (result.tracks.length === 0) {
+                    interaction.reply("No results found for this playlist!");
+                    return;
+                }
+
+                playPlaylist(queue, result, interaction);
+                return;
 
             } else if (utils.isWholeNumber(userInput)) {
                 //If input is a number meaning the user wants to play a song from the songBuffer
