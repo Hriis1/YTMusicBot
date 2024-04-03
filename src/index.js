@@ -13,6 +13,7 @@ const path = require("node:path");
 
 //My files
 const utils = require('./utils');
+const { isYoutubePlaylistURL } = require('youtube-ext/dist/utils');
 
 //variables
 var queue;
@@ -129,9 +130,6 @@ client.on('interactionCreate', async (interaction) => {
         //Get the link
         const userInput = interaction.options.get('music').value;
 
-        //Determine if the user is giving a playlist
-        const isPlaylist = interaction.options.get('isplaylist') != null ? interaction.options.get('isplaylist').value : false;
-
         //Create a queue
         try {
             // Await the creation of the queue
@@ -143,7 +141,7 @@ client.on('interactionCreate', async (interaction) => {
             //Determine if user is giving a link or search terms and get the desired song
             let song = null;
             let result = null;
-            if (isPlaylist) {
+            if (utils.isYouTubePlaylist(userInput)) {
                 //If the user has specified what he gave is a playlist
                 interaction.reply("Playlist :)");
 

@@ -52,12 +52,6 @@ const commands = [
                 type: ApplicationCommandOptionType.String,
                 required: true
             },
-            {
-                name: 'isplaylist',
-                description: 'Is what you are giving a playlist?',
-                type: ApplicationCommandOptionType.Boolean,
-                required: false
-            },
         ]
     },
     {
