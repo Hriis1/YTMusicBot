@@ -16,6 +16,7 @@ const utils = require('./utils');
 
 //variables
 var queue;
+var songBuffer = [];
 
 //functions
 async function playSong(queue, song, interaction) {
@@ -133,7 +134,6 @@ client.on('interactionCreate', async (interaction) => {
             if (!queue.connection) await queue.connect(memberVoiceChannel);
 
             //Determine if user is giving a link or search terms and get the desired song
-            let querryType = null;
             let song = null;
             let result = null;
             if (utils.isYouTubeLink(userInput)) {
@@ -171,14 +171,17 @@ client.on('interactionCreate', async (interaction) => {
                 //Determine the number of songs
                 const songCount = result.tracks.length >= 5 ? 5 : result.tracks.length;
 
-                //Print the names of the first songCount found songs
+                let replyMsg = "Which song to play?\n";
                 for (let index = 0; index < songCount; index++) {
+                    //Get the song
                     const song = result.tracks[index];
-                    console.log(index + 1 + ". " + song.title + "\n");
+                    //Push the song to the buffer
+                    songBuffer.push(song);
+                    //Build the reply msg
+                    replyMsg+=index + 1 + ". " + song.title + "\n";
                 }
 
-                interaction.reply("Youtube searching!");
-                return;
+                interaction.reply(replyMsg);
             }
         } catch (error) {
             console.error("Error occurred while creating or playing the queue:", error);
