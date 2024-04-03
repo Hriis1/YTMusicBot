@@ -127,8 +127,9 @@ client.on('interactionCreate', async (interaction) => {
         //Create a queue
         try {
             // Await the creation of the queue
-            if (queue == undefined) {
+            if ((queue == undefined) || (!queue.isPlaying() && queue.isEmpty())) {
                 queue = await client.player.nodes.create(interaction.guildId);
+                console.log("Creating a new queue");
             }
 
             if (!queue.connection) await queue.connect(memberVoiceChannel);
@@ -136,7 +137,19 @@ client.on('interactionCreate', async (interaction) => {
             //Determine if user is giving a link or search terms and get the desired song
             let song = null;
             let result = null;
-            if (utils.isYouTubeLink(userInput)) {
+            if (utils.isWholeNumber(userInput)) {
+                //If input is a number meaning the user wants to play a song from the songBuffer
+                if (songBuffer.length == 0) {
+                    interaction.reply("Song buffer is empty. There is nothing to chose from!");
+                }
+                else {
+                    //Clear the song buffer
+                    songBuffer = [];
+                    interaction.reply("Clearing the song buffer :)");
+                }
+
+            }
+            else if (utils.isYouTubeLink(userInput)) {
                 //If input is a link
                 console.log("Input is a link!");
                 result = await client.player.search(userInput, {
@@ -155,6 +168,7 @@ client.on('interactionCreate', async (interaction) => {
 
                 //Print the size of the queue for testing
                 console.log(queue.size);
+                return;
             } else {
                 //If input is not a link
                 console.log("Input is not a link");
@@ -178,10 +192,12 @@ client.on('interactionCreate', async (interaction) => {
                     //Push the song to the buffer
                     songBuffer.push(song);
                     //Build the reply msg
-                    replyMsg+=index + 1 + ". " + song.title + "\n";
+                    replyMsg += index + 1 + ". " + song.title + "\n";
                 }
+                
 
                 interaction.reply(replyMsg);
+                return;
             }
         } catch (error) {
             console.error("Error occurred while creating or playing the queue:", error);
