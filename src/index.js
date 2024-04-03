@@ -17,6 +17,19 @@ const utils = require('./utils');
 //variables
 var queue;
 
+//functions
+async function playSong(queue, song, interaction) {
+    if (queue.isPlaying()) {
+        //if a song is already plaing
+        await queue.addTrack(song);
+        interaction.reply("Added: " + song.title + " to the queue!");
+    } else {
+        //if there is no song playing
+        await queue.play(song);
+        interaction.reply("Playing: " + song.title);
+    }
+}
+
 const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
@@ -124,8 +137,8 @@ client.on('interactionCreate', async (interaction) => {
             let song = null;
             let result = null;
             if (utils.isYouTubeLink(userInput)) {
+                //If input is a link
                 console.log("Input is a link!");
-                //Search
                 result = await client.player.search(userInput, {
                     requestedBy: interaction.user,
                     searchEngine: QueryType.YOUTUBE_VIDEO
@@ -135,15 +148,31 @@ client.on('interactionCreate', async (interaction) => {
                     interaction.reply("No results found");
                     return;
                 }
+
+                //Play the song
+                song = result.tracks[0];
+                playSong(queue, song, interaction);
+
+                //Print the size of the queue for testing
+                console.log(queue.size);
             } else {
+                //If input is not a link
                 console.log("Input is not a link");
                 result = await client.player.search(userInput, {
                     requestedBy: interaction.user,
                     searchEngine: QueryType.YOUTUBE_SEARCH
                 });
 
-                //Print the names of the first 5 found songs
-                for (let index = 0; index < 5; index++) {
+                if (result.tracks.length === 0) {
+                    interaction.reply("No results found");
+                    return;
+                }
+
+                //Determine the number of songs
+                const songCount = result.tracks.length >= 5 ? 5 : result.tracks.length;
+
+                //Print the names of the first songCount found songs
+                for (let index = 0; index < songCount; index++) {
                     const song = result.tracks[index];
                     console.log(index + 1 + ". " + song.title + "\n");
                 }
@@ -151,24 +180,6 @@ client.on('interactionCreate', async (interaction) => {
                 interaction.reply("Youtube searching!");
                 return;
             }
-
-
-            //Play the song
-            song = result.tracks[0];
-            if (queue.isPlaying()) {
-                //if a song is already plaing
-                await queue.addTrack(song);
-                interaction.reply("Added: " + song.title + " to the queue!");
-            } else {
-                //if there is no song playing
-                await queue.play(song);
-                interaction.reply("Playing: " + song.title);
-            }
-
-
-            console.log(queue.size);
-
-
         } catch (error) {
             console.error("Error occurred while creating or playing the queue:", error);
             interaction.reply("An error occurred while processing your request.");
