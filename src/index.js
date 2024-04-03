@@ -141,11 +141,12 @@ client.on('interactionCreate', async (interaction) => {
                     requestedBy: interaction.user,
                     searchEngine: QueryType.YOUTUBE_SEARCH
                 });
-                let iterator = 1;
-                result.tracks.forEach(song => {
-                    console.log(iterator + ". " + song.title + "\n");
-                    iterator++;
-                });
+
+                //Print the names of the first 5 found songs
+                for (let index = 0; index < 5; index++) {
+                    const song = result.tracks[index];
+                    console.log(index + 1 + ". " + song.title + "\n");
+                }
 
                 interaction.reply("Youtube searching!");
                 return;
