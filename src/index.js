@@ -119,30 +119,31 @@ client.on('interactionCreate', async (interaction) => {
 
             if (!queue.connection) await queue.connect(memberVoiceChannel);
 
-            //Determine if user is giving a link or search terms
+            //Determine if user is giving a link or search terms and get the desired song
             let querryType = null;
             let song = null;
+            let result = null;
             if (utils.isYouTubeLink(userInput)) {
                 console.log("Input is a link!");
                 querryType = QueryType.YOUTUBE_VIDEO;
+                //Search
+                result = await client.player.search(userInput, {
+                    requestedBy: interaction.user,
+                    searchEngine: QueryType.YOUTUBE_VIDEO
+                });
+
+                if (result.tracks.length === 0) {
+                    interaction.reply("No results found");
+                    return;
+                }
             } else {
                 console.log("Input is not a link");
                 return;
             }
-            //Search
-            const result = await client.player.search(userInput, {
-                requestedBy: interaction.user,
-                searchEngine: QueryType.YOUTUBE_VIDEO
-            });
-
-            if (result.tracks.length === 0) {
-                interaction.reply("No results found");
-                return;
-            }
 
 
+            //Play the song
             song = result.tracks[0];
-
             if (queue.isPlaying()) {
                 //if a song is already plaing
                 await queue.addTrack(song);
