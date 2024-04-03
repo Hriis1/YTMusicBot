@@ -185,6 +185,9 @@ client.on('interactionCreate', async (interaction) => {
                 //Determine the number of songs
                 const songCount = result.tracks.length >= 5 ? 5 : result.tracks.length;
 
+                //Clear the song buffer
+                songBuffer = [];
+
                 let replyMsg = "Which song to play?\n";
                 for (let index = 0; index < songCount; index++) {
                     //Get the song
