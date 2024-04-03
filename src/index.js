@@ -129,6 +129,9 @@ client.on('interactionCreate', async (interaction) => {
         //Get the link
         const userInput = interaction.options.get('music').value;
 
+        //Determine if the user is giving a playlist
+        const isPlaylist = interaction.options.get('isplaylist') != null ? interaction.options.get('isplaylist').value : false;
+
         //Create a queue
         try {
             // Await the creation of the queue
@@ -140,7 +143,11 @@ client.on('interactionCreate', async (interaction) => {
             //Determine if user is giving a link or search terms and get the desired song
             let song = null;
             let result = null;
-            if (utils.isWholeNumber(userInput)) {
+            if (isPlaylist) {
+                //If the user has specified what he gave is a playlist
+                interaction.reply("Playlist :)");
+
+            } else if (utils.isWholeNumber(userInput)) {
                 //If input is a number meaning the user wants to play a song from the songBuffer
                 if (songBuffer.length == 0) {
                     interaction.reply("Song buffer is empty. There is nothing to chose from!");
@@ -148,7 +155,7 @@ client.on('interactionCreate', async (interaction) => {
                 else {
                     //Get the number
                     const songPos = parseInt(userInput);
-                    if(songPos <= 0 || songPos > songBuffer.length) {
+                    if (songPos <= 0 || songPos > songBuffer.length) {
                         interaction.reply("Incorrect input. Please chose a number from the list!");
                         return;
                     }
@@ -160,9 +167,8 @@ client.on('interactionCreate', async (interaction) => {
                     //Clear the song buffer
                     songBuffer = [];
                 }
-
-            }
-            else if (utils.isYouTubeLink(userInput)) {
+                return;
+            } else if (utils.isYouTubeLink(userInput)) {
                 //If input is a link
                 console.log("Input is a link!");
                 result = await client.player.search(userInput, {
