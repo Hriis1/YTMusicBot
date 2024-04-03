@@ -197,7 +197,7 @@ client.on('interactionCreate', async (interaction) => {
                     //Build the reply msg
                     replyMsg += index + 1 + ". " + song.title + "\n";
                 }
-                
+
 
                 interaction.reply(replyMsg);
                 return;
@@ -208,8 +208,8 @@ client.on('interactionCreate', async (interaction) => {
         }
     } else if (interaction.commandName === 'skip') {
 
-        if (queue === undefined) {
-            interaction.reply("Queue not yet created. Nothing to skip!");
+        if ((queue == undefined) || (!queue.isPlaying() && queue.isEmpty())) {
+            interaction.reply("Nothing to skip!");
         } else if (queue.isPlaying()) {
             if (queue.size != 0) {
                 //If there is another song in the queue
