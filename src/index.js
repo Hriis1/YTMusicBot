@@ -125,7 +125,6 @@ client.on('interactionCreate', async (interaction) => {
             let result = null;
             if (utils.isYouTubeLink(userInput)) {
                 console.log("Input is a link!");
-                querryType = QueryType.YOUTUBE_VIDEO;
                 //Search
                 result = await client.player.search(userInput, {
                     requestedBy: interaction.user,
@@ -138,6 +137,17 @@ client.on('interactionCreate', async (interaction) => {
                 }
             } else {
                 console.log("Input is not a link");
+                result = await client.player.search(userInput, {
+                    requestedBy: interaction.user,
+                    searchEngine: QueryType.YOUTUBE_SEARCH
+                });
+                let iterator = 1;
+                result.tracks.forEach(song => {
+                    console.log(iterator + ". " + song.title + "\n");
+                    iterator++;
+                });
+
+                interaction.reply("Youtube searching!");
                 return;
             }
 
