@@ -11,6 +11,9 @@ const { IntentsBitField, EmbedBuilder } = require('discord.js');
 const fs = require("node:fs");
 const path = require("node:path");
 
+//My files
+const utils = require('./utils');
+
 //variables
 var queue;
 
@@ -116,6 +119,17 @@ client.on('interactionCreate', async (interaction) => {
 
             if (!queue.connection) await queue.connect(memberVoiceChannel);
 
+            //Determine if user is giving a link or search terms
+            let querryType = null;
+            let song = null;
+            if (utils.isYouTubeLink(userInput)) {
+                console.log("Input is a link!");
+                querryType = QueryType.YOUTUBE_VIDEO;
+            } else {
+                console.log("Input is not a link");
+                return;
+            }
+            //Search
             const result = await client.player.search(userInput, {
                 requestedBy: interaction.user,
                 searchEngine: QueryType.YOUTUBE_VIDEO
@@ -127,7 +141,7 @@ client.on('interactionCreate', async (interaction) => {
             }
 
 
-            const song = result.tracks[0];
+            song = result.tracks[0];
 
             if (queue.isPlaying()) {
                 //if a song is already plaing
