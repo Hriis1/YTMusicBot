@@ -20,6 +20,11 @@ var songBuffer = [];
 
 //functions
 async function playSong(queue, song, interaction) {
+
+    // Get the voice channel of the user who triggered the command and connect to it
+    const memberVoiceChannel = interaction.member.voice.channel;
+    if (!queue.connection) await queue.connect(memberVoiceChannel);
+
     if (queue.isPlaying()) {
         //if a song is already plaing
         await queue.addTrack(song);
@@ -121,8 +126,7 @@ client.on('interactionCreate', async (interaction) => {
         //Get the link
         const userInput = interaction.options.get('music').value;
 
-        // Get the voice channel of the user who triggered the command
-        const memberVoiceChannel = interaction.member.voice.channel;
+
 
         //Create a queue
         try {
@@ -131,8 +135,6 @@ client.on('interactionCreate', async (interaction) => {
                 queue = await client.player.nodes.create(interaction.guildId);
                 console.log("Creating a new queue");
             }
-
-            if (!queue.connection) await queue.connect(memberVoiceChannel);
 
             //Determine if user is giving a link or search terms and get the desired song
             let song = null;
