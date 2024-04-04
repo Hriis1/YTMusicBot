@@ -64,7 +64,7 @@ async function playPlaylist(queue, playlist, interaction) {
     const playlistUsername = playlist._data.playlist.author.name;
 
     //Reply to the user
-    interaction.reply("Added playlist: " + playlistName + " by: " + playlistUsername);
+    interaction.reply("Added playlist: " + playlistName + " by: " + playlistUsername + " to the queue!");
 
     //Print the size of the queue for testing
     console.log(queue.size);
