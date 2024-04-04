@@ -59,8 +59,12 @@ async function playPlaylist(queue, playlist, interaction) {
         }
     }
 
-    interaction.reply("Added the playlist to the queue!");
+    //Get the name of the playlist and the user
+    const playlistName = playlist._data.playlist.description;
+    const playlistUsername = playlist._data.playlist.author.name;
 
+    //Reply to the user
+    interaction.reply("Added playlist: " + playlistName + " by: " + playlistUsername);
 
     //Print the size of the queue for testing
     console.log(queue.size);
@@ -178,10 +182,6 @@ client.on('interactionCreate', async (interaction) => {
                     interaction.reply("No results found for this playlist!");
                     return;
                 }
-
-                //Get the name of the playlist and the user
-                const playlistName = result._data.playlist.description;
-                const playlistUsername = result._data.playlist.author.name;
 
                 playPlaylist(queue, result, interaction);
                 return;
