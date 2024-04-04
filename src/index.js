@@ -179,6 +179,10 @@ client.on('interactionCreate', async (interaction) => {
                     return;
                 }
 
+                //Get the name of the playlist and the user
+                const playlistName = result._data.playlist.description;
+                const playlistUsername = result._data.playlist.author.name;
+
                 playPlaylist(queue, result, interaction);
                 return;
 
