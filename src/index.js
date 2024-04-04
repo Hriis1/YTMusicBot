@@ -306,8 +306,14 @@ client.on('interactionCreate', async (interaction) => {
         interaction.reply("Cleared the queue!");
         return 0;
     } else if (interaction.commandName === 'kill') {
-        interaction.reply("Killing :)");
-        console.log(queue.size);
+        //Clear the queue
+        await queue.clear();
+
+        //Stop the currently playing song
+        queue.delete();
+        queue = undefined;
+
+        interaction.reply("Killed the music!");
         return 0;
     }
 });
