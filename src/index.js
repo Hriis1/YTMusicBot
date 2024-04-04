@@ -301,6 +301,10 @@ client.on('interactionCreate', async (interaction) => {
             }
         }
         //interaction.reply("Skipping");
+    } else if (interaction.commandName === 'clear') {
+        interaction.reply("Clearing :)");
+    } else if (interaction.commandName === 'kill') {
+        interaction.reply("Killing :)");
     }
 });
 

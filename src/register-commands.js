@@ -60,6 +60,10 @@ const commands = [
     },
     {
         name: 'clear',
+        description: 'Clears the whole queue!'
+    },
+    {
+        name: 'kill',
         description: 'Clears the whole queue and the currently playing song!'
     },
     {
