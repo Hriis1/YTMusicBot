@@ -24,6 +24,10 @@ async function playSong(queue, song, interaction) {
 
     // Get the voice channel of the user who triggered the command and connect to it
     const memberVoiceChannel = interaction.member.voice.channel;
+    //Check if the user is in a voice channel
+    if (memberVoiceChannel == null) {
+        return -1;
+    }
     if (!queue.connection) await queue.connect(memberVoiceChannel);
 
     if (queue.isPlaying()) {
@@ -38,12 +42,18 @@ async function playSong(queue, song, interaction) {
 
     //Print the size of the queue for testing
     console.log(queue.size);
+
+    return 0;
 }
 
 async function playPlaylist(queue, playlist, interaction) {
 
     // Get the voice channel of the user who triggered the command and connect to it
     const memberVoiceChannel = interaction.member.voice.channel;
+    //Check if the user is in a voice channel
+    if (memberVoiceChannel == null) {
+        return -1;
+    }
     if (!queue.connection) await queue.connect(memberVoiceChannel);
 
     //Add the songs of the playlist to the queue
@@ -52,7 +62,7 @@ async function playPlaylist(queue, playlist, interaction) {
         song.playlist = undefined;
         if (queue.isPlaying()) {
             //if a song is already plaing
-            await queue.addTrack(song);         
+            await queue.addTrack(song);
         } else {
             //if there is no song playing
             await queue.play(song);
@@ -68,6 +78,8 @@ async function playPlaylist(queue, playlist, interaction) {
 
     //Print the size of the queue for testing
     console.log(queue.size);
+
+    return 0;
 }
 
 const client = new Client({
@@ -183,7 +195,10 @@ client.on('interactionCreate', async (interaction) => {
                     return;
                 }
 
-                playPlaylist(queue, result, interaction);
+                if (await playPlaylist(queue, result, interaction) == -1) {
+                    interaction.reply("User must be in a voice channel to play a playlist!");
+                    return;
+                }
                 return;
 
             } else if (utils.isWholeNumber(userInput)) {
@@ -201,7 +216,11 @@ client.on('interactionCreate', async (interaction) => {
 
                     //Play the song
                     song = songBuffer[songPos];
-                    playSong(queue, song, interaction);
+                    if (await playSong(queue, song, interaction) == -1) {
+                        //If playSong failed
+                        interaction.reply("User must be in a voice channel to play a song!");
+                        return;
+                    }
 
                     //Clear the song buffer
                     songBuffer = [];
@@ -222,7 +241,11 @@ client.on('interactionCreate', async (interaction) => {
 
                 //Play the song
                 song = result.tracks[0];
-                playSong(queue, song, interaction);
+                if (await playSong(queue, song, interaction) == -1) {
+                    //If playSong failed
+                    interaction.reply("User must be in a voice channel to play a song!");
+                    return;
+                }
                 return;
             } else {
                 //If input is not a link
