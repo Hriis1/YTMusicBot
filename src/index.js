@@ -302,9 +302,13 @@ client.on('interactionCreate', async (interaction) => {
         }
         //interaction.reply("Skipping");
     } else if (interaction.commandName === 'clear') {
-        interaction.reply("Clearing :)");
+        await queue.clear();
+        interaction.reply("Cleared the queue!");
+        return 0;
     } else if (interaction.commandName === 'kill') {
         interaction.reply("Killing :)");
+        console.log(queue.size);
+        return 0;
     }
 });
 

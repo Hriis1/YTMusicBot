@@ -64,7 +64,7 @@ const commands = [
     },
     {
         name: 'kill',
-        description: 'Clears the whole queue and the currently playing song!'
+        description: 'Clears the whole queue and stops the currently playing song!'
     },
     {
         name: 'embed',
