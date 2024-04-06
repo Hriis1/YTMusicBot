@@ -67,6 +67,10 @@ const commands = [
         description: 'Clears the whole queue and stops the currently playing song!'
     },
     {
+        name: 'queue',
+        description: 'Shows the songs in the queue!'
+    },
+    {
         name: 'embed',
         description: 'Sends an embed!'
     }
