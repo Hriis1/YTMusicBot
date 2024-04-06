@@ -1,19 +1,15 @@
 require('dotenv').config();
 
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
-const { Client, Intents, Collection } = require('discord.js');
+const { Client} = require('discord.js');
 const { Player, QueryType } = require('discord-player');
 
 const { IntentsBitField, EmbedBuilder } = require('discord.js');
 
 //node packages
-const fs = require("node:fs");
 const path = require("node:path");
 
 //My files
 const utils = require('./utils');
-const { isYoutubePlaylistURL } = require('youtube-ext/dist/utils');
 
 //variables
 var queue;
@@ -315,6 +311,14 @@ client.on('interactionCreate', async (interaction) => {
 
         interaction.reply("Killed the music!");
         return 0;
+    } else if (interaction.commandName === 'queue') {
+        if (queue == undefined || queue.isEmpty()) {
+            interaction.reply("Queue is empty!");
+            return;
+        }
+        const tracks = queue.tracks;
+        interaction.reply("Queue info :)!");
+        return;
     }
 });
 
