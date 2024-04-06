@@ -10,6 +10,7 @@ const path = require("node:path");
 
 //My files
 const utils = require('./utils');
+const { strict } = require('node:assert');
 
 //variables
 var queue;
@@ -316,8 +317,13 @@ client.on('interactionCreate', async (interaction) => {
             interaction.reply("Queue is empty!");
             return;
         }
-        const tracks = queue.tracks;
-        interaction.reply("Queue info :)!");
+        const tracks = queue.tracks.data;
+        let replyMsg = "";
+        for (let index = 0; index <  tracks.length; index++) {
+            const songTitle = tracks[index].title;
+            replyMsg+= index + ". " + songTitle + "\n"; 
+        }
+        interaction.reply(replyMsg);
         return;
     }
 });
