@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { Client} = require('discord.js');
+const { Client } = require('discord.js');
 const { Player, QueryType } = require('discord-player');
 
 const { IntentsBitField, EmbedBuilder } = require('discord.js');
@@ -297,7 +297,6 @@ client.on('interactionCreate', async (interaction) => {
                 await interaction.reply("Skipped the current song! No more songs to play!");
             }
         }
-        //await interaction.reply("Skipping");
     } else if (interaction.commandName === 'clear') {
         await queue.clear();
         await interaction.reply("Cleared the queue!");
@@ -319,9 +318,9 @@ client.on('interactionCreate', async (interaction) => {
         }
         const tracks = queue.tracks.data;
         let replyMsg = "";
-        for (let index = 0; index <  tracks.length; index++) {
+        for (let index = 0; index < tracks.length; index++) {
             const songTitle = tracks[index].title;
-            replyMsg+= index + ". " + songTitle + "\n"; 
+            replyMsg += index + ". " + songTitle + "\n";
         }
         await interaction.reply(replyMsg);
         return;
