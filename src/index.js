@@ -30,11 +30,11 @@ async function playSong(queue, song, interaction) {
     if (queue.isPlaying()) {
         //if a song is already plaing
         await queue.addTrack(song);
-        interaction.reply("Added: " + song.title + " to the queue!");
+        await interaction.reply("Added: " + song.title + " to the queue!");
     } else {
         //if there is no song playing
         await queue.play(song);
-        interaction.reply("Playing: " + song.title);
+        await interaction.reply("Playing: " + song.title);
     }
 
     //Print the size of the queue for testing
@@ -71,7 +71,7 @@ async function playPlaylist(queue, playlist, interaction) {
     const playlistUsername = playlist._data.playlist.author.name;
 
     //Reply to the user
-    interaction.reply("Added playlist: " + playlistName + " by: " + playlistUsername + " to the queue!");
+    await interaction.reply("Added playlist: " + playlistName + " by: " + playlistUsername + " to the queue!");
 
     //Print the size of the queue for testing
     console.log(queue.size);
@@ -124,15 +124,15 @@ client.on('interactionCreate', async (interaction) => {
 
     //Check for different commands
     if (interaction.commandName === 'hey') {
-        interaction.reply("ko staa kopele!");
+        await interaction.reply("ko staa kopele!");
     } else if (interaction.commandName === 'addorsubtract') {
         const num1 = interaction.options.get('num1').value;
         const num2 = interaction.options.get('num2').value;
 
         if (interaction.options.get('operation').value === 'add') {
-            interaction.reply(`${num1} + ${num2} = ${num1 + num2}`);
+            await interaction.reply(`${num1} + ${num2} = ${num1 + num2}`);
         } else {
-            interaction.reply(`${num1} - ${num2} = ${num1 - num2}`);
+            await interaction.reply(`${num1} - ${num2} = ${num1 - num2}`);
         }
     } else if (interaction.commandName === 'embed') {
         //Create and fill the embed
@@ -162,7 +162,7 @@ client.on('interactionCreate', async (interaction) => {
             );
 
         //Send the embed
-        interaction.reply({ embeds: [embed] });
+        await interaction.reply({ embeds: [embed] });
     } else if (interaction.commandName === 'play') {
 
 
@@ -188,12 +188,12 @@ client.on('interactionCreate', async (interaction) => {
                 });
 
                 if (result.tracks.length === 0) {
-                    interaction.reply("No results found for this playlist!");
+                    await interaction.reply("No results found for this playlist!");
                     return;
                 }
 
                 if (await playPlaylist(queue, result, interaction) == -1) {
-                    interaction.reply("User must be in a voice channel to play a playlist!");
+                    await interaction.reply("User must be in a voice channel to play a playlist!");
                     return;
                 }
                 return;
@@ -201,13 +201,13 @@ client.on('interactionCreate', async (interaction) => {
             } else if (utils.isWholeNumber(userInput)) {
                 //If input is a number meaning the user wants to play a song from the songBuffer
                 if (songBuffer.length == 0) {
-                    interaction.reply("Song buffer is empty. There is nothing to chose from!");
+                    await interaction.reply("Song buffer is empty. There is nothing to chose from!");
                 }
                 else {
                     //Get the number
                     const songPos = parseInt(userInput);
                     if (songPos <= 0 || songPos > songBuffer.length) {
-                        interaction.reply("Incorrect input. Please chose a number from the list!");
+                        await interaction.reply("Incorrect input. Please chose a number from the list!");
                         return;
                     }
 
@@ -215,7 +215,7 @@ client.on('interactionCreate', async (interaction) => {
                     song = songBuffer[songPos];
                     if (await playSong(queue, song, interaction) == -1) {
                         //If playSong failed
-                        interaction.reply("User must be in a voice channel to play a song!");
+                        await interaction.reply("User must be in a voice channel to play a song!");
                         return;
                     }
 
@@ -232,7 +232,7 @@ client.on('interactionCreate', async (interaction) => {
                 });
 
                 if (result.tracks.length === 0) {
-                    interaction.reply("No results found");
+                    await interaction.reply("No results found");
                     return;
                 }
 
@@ -240,7 +240,7 @@ client.on('interactionCreate', async (interaction) => {
                 song = result.tracks[0];
                 if (await playSong(queue, song, interaction) == -1) {
                     //If playSong failed
-                    interaction.reply("User must be in a voice channel to play a song!");
+                    await interaction.reply("User must be in a voice channel to play a song!");
                     return;
                 }
                 return;
@@ -253,7 +253,7 @@ client.on('interactionCreate', async (interaction) => {
                 });
 
                 if (result.tracks.length === 0) {
-                    interaction.reply("No results found");
+                    await interaction.reply("No results found");
                     return;
                 }
 
@@ -274,33 +274,33 @@ client.on('interactionCreate', async (interaction) => {
                 }
 
 
-                interaction.reply(replyMsg);
+                await interaction.reply(replyMsg);
                 return;
             }
         } catch (error) {
             console.error("Error occurred while creating or playing the queue:", error);
-            interaction.reply("An error occurred while processing your request.");
+            await interaction.reply("An error occurred while processing your request.");
         }
     } else if (interaction.commandName === 'skip') {
 
         if ((queue == undefined) || (!queue.isPlaying() && queue.isEmpty())) {
-            interaction.reply("Nothing to skip!");
+            await interaction.reply("Nothing to skip!");
         } else if (queue.isPlaying()) {
             if (queue.size != 0) {
                 //If there is another song in the queue
                 await queue.node.skip();
-                interaction.reply("Skipped the current song!");
+                await interaction.reply("Skipped the current song!");
             } else {
                 //If this is the last playing song
                 queue.delete();
                 queue = undefined;
-                interaction.reply("Skipped the current song! No more songs to play!");
+                await interaction.reply("Skipped the current song! No more songs to play!");
             }
         }
-        //interaction.reply("Skipping");
+        //await interaction.reply("Skipping");
     } else if (interaction.commandName === 'clear') {
         await queue.clear();
-        interaction.reply("Cleared the queue!");
+        await interaction.reply("Cleared the queue!");
         return 0;
     } else if (interaction.commandName === 'kill') {
         //Clear the queue
@@ -310,11 +310,11 @@ client.on('interactionCreate', async (interaction) => {
         queue.delete();
         queue = undefined;
 
-        interaction.reply("Killed the music!");
+        await interaction.reply("Killed the music!");
         return 0;
     } else if (interaction.commandName === 'queue') {
         if (queue == undefined || queue.isEmpty()) {
-            interaction.reply("Queue is empty!");
+            await interaction.reply("Queue is empty!");
             return;
         }
         const tracks = queue.tracks.data;
@@ -323,7 +323,7 @@ client.on('interactionCreate', async (interaction) => {
             const songTitle = tracks[index].title;
             replyMsg+= index + ". " + songTitle + "\n"; 
         }
-        interaction.reply(replyMsg);
+        await interaction.reply(replyMsg);
         return;
     }
 });
